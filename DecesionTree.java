@@ -11,8 +11,18 @@ import java.util.Random;
 public class DecesionTree {
 	
     public static void main(String[] args) throws FileNotFoundException {
-
-        String test  = "overcast,hot,high,false";
+        
+        double ttt = DecesionTreeCalculation("");
+       
+        
+        /*for (int i =0; i < outlook.getArrIsPlaying().size(); i++){
+            for (int k=0; k < outlook.getArrIsPlaying().get(i).length; k++){
+                System.out.println(outlook.getArrIsPlaying().get(i)[k]); 
+            }
+            System.out.println();
+        }*/
+        
+        /*String test  = "overcast,hot,high,false";
         System.out.println(DecesionTreeCalculation(test));
         Random rd = new Random();
         String outlook, temp, humidty,windy;
@@ -30,18 +40,19 @@ public class DecesionTree {
         }
         System.out.println("Number play: " + countPlay);
         System.out.println("Number no play: " + countNoplay);
+        */
 
     }
 	
-    
+    static Property outlook = new Property();
+    static Property humidty = new Property();
+    static Property windy = new Property();
+    static Property temp = new Property();
+    static int[] t = {0, 0};
     static ArrayList<String> arrOutlook = new ArrayList<>();
     static ArrayList<String> arrTemp = new ArrayList<>(); 
     static ArrayList<String> arrHumidty = new ArrayList<>();
     static ArrayList<String> arrWindy = new ArrayList<>();
-    static ArrayList<int[]> arrOutlookInt = new ArrayList<>();
-    static ArrayList<int[]> arrTempInt = new ArrayList<>();
-    static ArrayList<int[]> arrHumidtyInt = new ArrayList<>();
-    static ArrayList<int[]> arrWindyInt = new ArrayList<>();
     
     static double DecesionTreeCalculation(String inputString) throws FileNotFoundException {
         Scanner sc = new Scanner(new File("data/tennis.txt"));
@@ -67,14 +78,33 @@ public class DecesionTree {
             //Them tat ca cac kieu du lieu vao keys
             String[] tmp = dataArrL.get(i).split(",");
             
-            if (!arrOutlook.contains(tmp[0]))
-                arrOutlook.add(tmp[0]);
-            if (!arrTemp.contains(tmp[1]))
-                arrTemp.add(tmp[1]);
-            if (!arrHumidty.contains(tmp[2]))
-                arrHumidty.add(tmp[2]);
-            if (!arrWindy.contains(tmp[3]))
-            	arrWindy.add(tmp[3]);
+            if (!outlook.getArrProperty().contains(tmp[0])){
+                outlook.addElementProperty(tmp[0]); 
+                outlook.addElementIsPlaying(t);
+            }
+            if (!temp.getArrProperty().contains(tmp[1])){
+                temp.addElementProperty(tmp[1]);
+                temp.addElementIsPlaying(t);
+            }
+            if (!humidty.getArrProperty().contains(tmp[2])){
+                humidty.addElementProperty(tmp[2]);
+                humidty.addElementIsPlaying(t);
+            }
+            if (!windy.getArrProperty().contains(tmp[3])){
+            	windy.addElementProperty(tmp[3]);
+                windy.addElementIsPlaying(t);
+            }
+            
+            for (int o=0; o < outlook.getArrProperty().size(); o++){
+                if (tmp[0].equals(outlook.getArrProperty().get(o)) && "yes".equals(tmp[4])){
+                    outlook.getArrIsPlaying().get(o)[0]++;  //[play, noplay]
+                    //System.out.println(outlook.getArrIsPlaying().get(o)[0]);
+                    System.out.println(o);
+                }
+                else if (tmp[0].equals(outlook.getArrProperty().get(o)) && "no".equals(tmp[4])){
+                    outlook.getArrIsPlaying().get(o)[1]++;
+                }
+            }
             
             if (tmp[0].equals("sunny") && tmp[4].equals("yes")) 		sunnyYes++;
             if (tmp[0].equals("sunny") && tmp[4].equals("no"))			sunnyNo++;

@@ -11,15 +11,21 @@ import java.util.Random;
 public class DecesionTree {
 	
     public static void main(String[] args) throws FileNotFoundException {
+    	
         
         double ttt = DecesionTreeCalculation("");
-       
+        
+        int[] a = {1, 2};
+        int[] b = {4, 5};
+        
+        //outlook.addElementIsPlaying(a);
+        //outlook.addElementIsPlaying(b);
+        //outlook.getArrIsPlaying().get(1)[0]++;
         
         /*for (int i =0; i < outlook.getArrIsPlaying().size(); i++){
             for (int k=0; k < outlook.getArrIsPlaying().get(i).length; k++){
                 System.out.println(outlook.getArrIsPlaying().get(i)[k]); 
             }
-            System.out.println();
         }*/
         
         /*String test  = "overcast,hot,high,false";
@@ -55,9 +61,7 @@ public class DecesionTree {
     static ArrayList<String> arrWindy = new ArrayList<>();
     
     static double DecesionTreeCalculation(String inputString) throws FileNotFoundException {
-        Scanner sc = new Scanner(new File("data/tennis.txt"));
-        String[] type = new String[5]; 
-        String strTemp;
+        Scanner sc = new Scanner(new File("data/tennis.txt"));       
         ArrayList<String> dataArrL = new ArrayList<>();
         
         while (sc.hasNextLine()){
@@ -94,16 +98,27 @@ public class DecesionTree {
             	windy.addElementProperty(tmp[3]);
                 windy.addElementIsPlaying(t);
             }
-            
+
+            for (int ii =0; ii < outlook.getArrIsPlaying().size(); ii++){
+                for (int k=0; k < outlook.getArrIsPlaying().get(ii).length; k++){
+                    System.out.print(outlook.getArrIsPlaying().get(ii)[k] + ", " ); 
+                }
+                System.out.println("done");
+            }
             for (int o=0; o < outlook.getArrProperty().size(); o++){
                 if (tmp[0].equals(outlook.getArrProperty().get(o)) && "yes".equals(tmp[4])){
-                    outlook.getArrIsPlaying().get(o)[0]++;  //[play, noplay]
-                    //System.out.println(outlook.getArrIsPlaying().get(o)[0]);
-                    System.out.println(o);
+                    outlook.getArrIsPlaying().get(o)[0]++;  //[play, noPlay]
+                    for (int ii =0; ii < outlook.getArrIsPlaying().size(); ii++){
+                        for (int k=0; k < outlook.getArrIsPlaying().get(ii).length; k++){
+                            //System.out.print(outlook.getArrIsPlaying().get(ii)[k] + ", " ); 
+                        }
+                        //System.out.println();
+                    }
                 }
-                else if (tmp[0].equals(outlook.getArrProperty().get(o)) && "no".equals(tmp[4])){
+                /*else if (tmp[0].equals(outlook.getArrProperty().get(o)) && "no".equals(tmp[4])){
                     outlook.getArrIsPlaying().get(o)[1]++;
-                }
+                    //System.out.println(o);
+                }*/
             }
             
             if (tmp[0].equals("sunny") && tmp[4].equals("yes")) 		sunnyYes++;

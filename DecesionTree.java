@@ -13,40 +13,25 @@ public class DecesionTree {
     public static void main(String[] args) throws FileNotFoundException {
     	
         
-        double ttt = DecesionTreeCalculation("");
-        
-        int[] a = {1, 2};
-        int[] b = {4, 5};
-        
-        //outlook.addElementIsPlaying(a);
-        //outlook.addElementIsPlaying(b);
-        //outlook.getArrIsPlaying().get(1)[0]++;
-        
-        /*for (int i =0; i < outlook.getArrIsPlaying().size(); i++){
-            for (int k=0; k < outlook.getArrIsPlaying().get(i).length; k++){
-                System.out.println(outlook.getArrIsPlaying().get(i)[k]); 
-            }
-        }*/
-        
-        /*String test  = "overcast,hot,high,false";
+        String test  = "overcast,hot,high,false";
         System.out.println(DecesionTreeCalculation(test));
         Random rd = new Random();
-        String outlook, temp, humidty,windy;
+        String outlook1, temp1, humidty1,windy1;
         int countPlay = 0, countNoplay = 0;
         for (int i=0; i < 200; i++){
             
-            outlook = arrOutlook.get(rd.nextInt(arrOutlook.size()));
-            temp = arrTemp.get(rd.nextInt(arrTemp.size()));
-            humidty = arrHumidty.get(rd.nextInt(arrHumidty.size()));
-            windy = arrWindy.get(rd.nextInt(arrWindy.size()));
+            outlook1 = outlook.getArrProperty().get(rd.nextInt(arrOutlook.size()));
+            temp1 = temp.getArrProperty().get(rd.nextInt(arrTemp.size()));
+            humidty1 = humidty.getArrProperty().get(rd.nextInt(arrHumidty.size()));
+            windy1 = windy.getArrProperty().get(rd.nextInt(arrWindy.size()));
             
-            if (returnPlaying(outlook, temp, humidty, windy))     countPlay++;
+            if (returnPlaying(outlook1, temp1, humidty1, windy1))     countPlay++;
             else countNoplay++;
             
         }
         System.out.println("Number play: " + countPlay);
         System.out.println("Number no play: " + countNoplay);
-        */
+        
 
     }
 	
@@ -59,6 +44,7 @@ public class DecesionTree {
     static ArrayList<String> arrTemp = new ArrayList<>(); 
     static ArrayList<String> arrHumidty = new ArrayList<>();
     static ArrayList<String> arrWindy = new ArrayList<>();
+    static int hh = 0, hn = 0;
     
     static double DecesionTreeCalculation(String inputString) throws FileNotFoundException {
         Scanner sc = new Scanner(new File("data/tennis.txt"));       
@@ -72,7 +58,6 @@ public class DecesionTree {
         
         ArrayList<String> numberYes = new ArrayList<>();     //Tong tat ca cac thuoc tinh yes
         ArrayList<String> numberNo = new ArrayList<>();       // tong tat ca thuoc tinh no
-        ArrayList<String> allKindOfElement = new ArrayList<>();   //Tong tat ca cac thuoc tinh(khong trung)
         int sunnyYes = 0, sunnyNo = 0, overcastYes = 0, overcastNo = 0, rainyYes = 0, rainyNo = 0;
         int hotYes = 0, hotNo = 0, mildYes = 0, mildNo = 0, coolYes = 0, coolNo = 0; 
         int highYes = 0, highNo = 0, normalYes = 0, normalNo = 0;
@@ -99,28 +84,22 @@ public class DecesionTree {
                 windy.addElementIsPlaying(t);
             }
 
-            for (int ii =0; ii < outlook.getArrIsPlaying().size(); ii++){
-                for (int k=0; k < outlook.getArrIsPlaying().get(ii).length; k++){
-                    System.out.print(outlook.getArrIsPlaying().get(ii)[k] + ", " ); 
-                }
-                System.out.println("done");
-            }
+            /*
             for (int o=0; o < outlook.getArrProperty().size(); o++){
                 if (tmp[0].equals(outlook.getArrProperty().get(o)) && "yes".equals(tmp[4])){
-                    outlook.getArrIsPlaying().get(o)[0]++;  //[play, noPlay]
-                    for (int ii =0; ii < outlook.getArrIsPlaying().size(); ii++){
-                        for (int k=0; k < outlook.getArrIsPlaying().get(ii).length; k++){
-                            //System.out.print(outlook.getArrIsPlaying().get(ii)[k] + ", " ); 
-                        }
-                        //System.out.println();
-                    }
+                    outlook.getArray(o)[0]++;  //[play, noPlay]
+                    System.out.println(o);
+                    
+                    break;
+                    
                 }
-                /*else if (tmp[0].equals(outlook.getArrProperty().get(o)) && "no".equals(tmp[4])){
+                else if (tmp[0].equals(outlook.getArrProperty().get(o)) && "no".equals(tmp[4])){
                     outlook.getArrIsPlaying().get(o)[1]++;
-                    //System.out.println(o);
-                }*/
+                    break;
+                }
             }
-            
+            */
+
             if (tmp[0].equals("sunny") && tmp[4].equals("yes")) 		sunnyYes++;
             if (tmp[0].equals("sunny") && tmp[4].equals("no"))			sunnyNo++;
             if (tmp[0].equals("overcast") && tmp[4].equals("no"))		overcastNo++;
@@ -150,20 +129,9 @@ public class DecesionTree {
                 numberOfYes++;
             else numberOfNo++;
             
-            for (int j=0; j < tmp.length; j++){
-                
-                //Them cac gia tri data(khong trung) vao element
-                if (!allKindOfElement.contains(tmp[j])) {
-                    //loai bo yes no cua class play
-                    if (tmp[j].equals("yes") || tmp[j].equals("no") ){
-                        
-                    }
-                    else {
-                        allKindOfElement.add(tmp[j]);
-                    }
-                }
-            }
         }
+        
+        
         
         //Entropy root
         double rateYes = (double) numberOfYes/(numberOfYes + numberOfNo);
@@ -198,15 +166,14 @@ public class DecesionTree {
         double falseEntropy = ((double)(falseYes + falseNo)/(numberOfYes + numberOfNo))
                 *calculateEntropy( (double) falseYes/(falseYes + falseNo), (double) falseNo/(falseYes + falseNo) );
         
-        double entropyOutlook = entropySunny + entropyOvercast + entropyRainy;
-        double entropyTemp = mildEntropy + hotEntropy + coolEntropy;
-        double entropyHumidty = normalEntropy + highEntropy;
-        double entropyWindy = trueEntropy + falseEntropy;
-        double arrDouble[] = {entropyOutlook, entropyTemp, entropyHumidty, entropyWindy};
-        Arrays.sort(arrDouble);
+        outlook.setEntropy(entropySunny + entropyOvercast + entropyRainy) ;
+        temp.setEntropy(mildEntropy + hotEntropy + coolEntropy);
+        humidty.setEntropy(normalEntropy + highEntropy); 
+        windy.setEntropy( trueEntropy + falseEntropy);;
+        
         
         //Tong so luong cac phan tu ben trong data(loai bo di phan tu trung) va yes no cua play
-        return entropyWindy;
+        return 0;
     }
     
     

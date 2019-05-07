@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Random;
 
 
 public class DecesionTree {
 	
     public static void main(String[] args) throws FileNotFoundException {
-    	
         
-        String test  = "overcast,hot,high,false";
-        System.out.println(DecesionTreeCalculation(test));
+        
+        DecesionTreeCalculation();
         Random rd = new Random();
         String outlook1, temp1, humidty1,windy1;
         int countPlay = 0, countNoplay = 0;
+        rd.nextInt(3);
         for (int i=0; i < 200; i++){
             
-            outlook1 = outlook.getArrProperty().get(rd.nextInt(arrOutlook.size()));
-            temp1 = temp.getArrProperty().get(rd.nextInt(arrTemp.size()));
-            humidty1 = humidty.getArrProperty().get(rd.nextInt(arrHumidty.size()));
-            windy1 = windy.getArrProperty().get(rd.nextInt(arrWindy.size()));
+            outlook1 = outlook.getArrProperty().get(rd.nextInt(outlook.getArrProperty().size()));
+            temp1 = temp.getArrProperty().get(rd.nextInt(temp.getArrProperty().size()));
+            humidty1 = humidty.getArrProperty().get(rd.nextInt(humidty.getArrProperty().size()));
+            windy1 = windy.getArrProperty().get(rd.nextInt(windy.getArrProperty().size()));
             
             if (returnPlaying(outlook1, temp1, humidty1, windy1))     countPlay++;
             else countNoplay++;
@@ -40,24 +40,17 @@ public class DecesionTree {
     static Property windy = new Property();
     static Property temp = new Property();
     static int[] t = {0, 0};
-    static ArrayList<String> arrOutlook = new ArrayList<>();
-    static ArrayList<String> arrTemp = new ArrayList<>(); 
-    static ArrayList<String> arrHumidty = new ArrayList<>();
-    static ArrayList<String> arrWindy = new ArrayList<>();
-    static int hh = 0, hn = 0;
-    
-    static double DecesionTreeCalculation(String inputString) throws FileNotFoundException {
+    static ArrayList<String> dataArrL = new ArrayList<>();
+    static ArrayList<Property> propertyArrl = new ArrayList<>();
+    static void DecesionTreeCalculation() throws FileNotFoundException {
         Scanner sc = new Scanner(new File("data/tennis.txt"));       
-        ArrayList<String> dataArrL = new ArrayList<>();
+        
         
         while (sc.hasNextLine()){
             dataArrL.add(sc.nextLine());
         }
         
         int numberOfYes = 0, numberOfNo = 0;
-        
-        ArrayList<String> numberYes = new ArrayList<>();     //Tong tat ca cac thuoc tinh yes
-        ArrayList<String> numberNo = new ArrayList<>();       // tong tat ca thuoc tinh no
         int sunnyYes = 0, sunnyNo = 0, overcastYes = 0, overcastNo = 0, rainyYes = 0, rainyNo = 0;
         int hotYes = 0, hotNo = 0, mildYes = 0, mildNo = 0, coolYes = 0, coolNo = 0; 
         int highYes = 0, highNo = 0, normalYes = 0, normalNo = 0;
@@ -132,7 +125,6 @@ public class DecesionTree {
         }
         
         
-        
         //Entropy root
         double rateYes = (double) numberOfYes/(numberOfYes + numberOfNo);
         double rateNo = (double) numberOfNo/(numberOfYes + numberOfNo); 
@@ -169,11 +161,18 @@ public class DecesionTree {
         outlook.setEntropy(entropySunny + entropyOvercast + entropyRainy) ;
         temp.setEntropy(mildEntropy + hotEntropy + coolEntropy);
         humidty.setEntropy(normalEntropy + highEntropy); 
-        windy.setEntropy( trueEntropy + falseEntropy);;
+        windy.setEntropy( trueEntropy + falseEntropy);
         
         
-        //Tong so luong cac phan tu ben trong data(loai bo di phan tu trung) va yes no cua play
-        return 0;
+        
+        propertyArrl.add(outlook);
+        propertyArrl.add(temp);
+        propertyArrl.add(humidty);
+        propertyArrl.add(windy);
+        
+        //sap xep theo entropy tu nho den lon
+        Collections.sort(propertyArrl, new ComparatorByEntropy());
+        
     }
     
     
@@ -191,5 +190,7 @@ public class DecesionTree {
             return true;
         else return false;
     }
+    
+   
     
 }
